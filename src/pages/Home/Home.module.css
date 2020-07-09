@@ -1,0 +1,61 @@
+body {
+  overflow-x: hidden;
+}
+
+strong {
+  color: #fff;
+}
+
+.center {
+  text-align: center;
+}
+.container {
+  background-color: #212121;
+  color: #fff;
+  padding: 5% 10%;
+  width: 100%;
+}
+
+p strong {
+  font-weight: bold;
+}
+
+.animojiImg {
+  width: 250px;
+}
+
+.coverSecton {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coverInfo {
+  text-align: left;
+}
+
+.coverTitle {
+  font-size: 3em;
+}
+
+.coverSubTitle {
+  font-size: 1.5em;
+}
+
+@media screen and (max-width: 768px) {
+  .coverSecton {
+    display: block;
+  }
+
+  .animojiImg {
+    width: 150px;
+  }
+  .coverTitle {
+    font-size: 1.5em;
+  }
+
+  .coverSubTitle {
+    font-size: 1em;
+  }
+}
