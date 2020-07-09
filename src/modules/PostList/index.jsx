@@ -31,7 +31,7 @@ const FetchingLoader = ({ isFetching }) => {
   return (
     <div className={styles.circularProgressContainer}>
       <CircularProgress />
-      <p style={{ marginLeft: 20 }}>Getting Data</p>
+      <p style={{ marginLeft: 20 }}>Refreshing Data</p>
     </div>
   );
 };
@@ -78,14 +78,19 @@ function PostTable({
               <TableCell>ID</TableCell>
               <TableCell>Title</TableCell>
               <TableCell>Created By</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list.map((row, index) => (
-              <TableRow key={index}>
+              <TableRow
+                key={index}
+                style={row.isMutating ? { background: "#dcdcdc" } : {}}
+              >
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.title}</TableCell>
                 <TableCell>{row.userId}</TableCell>
+                <TableCell>{row.isMutating ? "Adding" : "Added"}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -139,7 +144,7 @@ function PostList() {
   const [mutate] = useMutation(createPost, {
     onMutate: (post) => {
       queryCache.cancelQueries(queryKey);
-      const newPost = { ...post, id: "NA" };
+      const newPost = { ...post, id: "..", isMutating: true };
       // Snapshot the previous value
       const previousTodos = queryCache.getQueryData(queryKey);
 
@@ -163,7 +168,13 @@ function PostList() {
     // After success or failure, refetch the todos query
     onSettled: (data, error) => {
       // console.log("On Settled", data, error);
-      if (!error) queryCache.invalidateQueries(queryKey);
+      if (!error) {
+        queryCache.invalidateQueries(queryKey);
+        openSnackbar({
+          message: "Post Added",
+          variant: "success",
+        });
+      }
     },
   });
 
