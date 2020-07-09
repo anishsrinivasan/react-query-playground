@@ -10,10 +10,42 @@ strong {
   text-align: center;
 }
 .container {
-  background-color: #212121;
-  color: #fff;
+  color: #212121;
+  background-color: #fff;
   padding: 5% 10%;
+  height: 100vh;
   width: 100%;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-weight: bold;
+  text-align: center;
+  font-size: 2em;
+}
+
+.networkChecker {
+  margin-left: 10px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.networkChipOnline {
+  background-color: #2ecc71;
+  color: #000;
+  border-radius: 15px;
+  padding: 5px 20px;
+}
+
+.networkChipOffline {
+  background-color: #c0392b;
+  color: #fff;
+  border-radius: 15px;
+  padding: 5px 20px;
 }
 
 p strong {

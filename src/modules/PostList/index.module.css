@@ -1,0 +1,27 @@
+.circularProgressContainer {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postTableContainer {
+  padding: 20px 0;
+}
+
+.addPostContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.addPostButton {
+  background-color: black;
+  color: #fff;
+  padding: 5px 20px;
+  cursor: pointer;
+  width: 150px;
+  border-radius: 15px;
+  text-align: center;
+}

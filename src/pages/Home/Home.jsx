@@ -1,35 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Home.module.css";
-import Header from "../../components/Header";
-import Animoji from "../../assets/images/anish_emoji.png";
-function CoverSection() {
-  return (
-    <section>
-      <div className={styles.coverSecton + " fade-in"}>
-        <p className={styles.center}>
-          <img className={styles.animojiImg} src={Animoji} />
-        </p>
+import PostList from "../../modules/PostList";
 
-        <div className={styles.coverInfo}>
-          <h1 className={styles.coverTitle}>
-            Hi, I am <strong>Anish Srinivasan</strong>
-          </h1>
-          <h2 className={styles.coverSubTitle}>
-            Full Stack <strong>Developer</strong>
-          </h2>
+function Home() {
+  console.log("IS HOME RE-RENDERING?");
+  return (
+    <div>
+      <div className={styles.container}>
+        <div className={styles.headerContainer}>
+          <h1 className={styles.title}>React Query</h1>
+          <NetworkChecker />
         </div>
+        <PostList />
       </div>
-    </section>
+    </div>
   );
 }
 
-function Home() {
+function NetworkChecker() {
+  const [isOnline, setNetwork] = useState(window.navigator.onLine);
+  const updateNetwork = () => {
+    setNetwork(window.navigator.onLine);
+  };
+  useEffect(() => {
+    window.addEventListener("offline", updateNetwork);
+    window.addEventListener("online", updateNetwork);
+    return () => {
+      window.removeEventListener("offline", updateNetwork);
+      window.removeEventListener("online", updateNetwork);
+    };
+  });
+  console.log("Check online", isOnline);
   return (
-    <div>
-      <Header />
-      <div className={styles.container}>
-        <CoverSection />
-      </div>
+    <div className={styles.networkChecker}>
+      Network Status :{" "}
+      {isOnline ? (
+        <span className={[styles.networkChipOnline]}>Online</span>
+      ) : (
+        <span className={[styles.networkChipOffline]}>Offline</span>
+      )}
     </div>
   );
 }
