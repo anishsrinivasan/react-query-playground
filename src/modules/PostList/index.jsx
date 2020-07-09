@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import styles from "./index.module.css";
 
 import Axios from "axios";
@@ -15,13 +15,11 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 
-import {
-  useQuery,
-  usePaginatedQuery,
-  useMutation,
-  queryCache,
-} from "react-query";
+import { usePaginatedQuery, useMutation, queryCache } from "react-query";
+import { openSnackbar } from "../../components/snackbar/index";
+
 Axios.defaults.baseURL = "http://localhost:5000"; // the prefix of the URL
+
 const skeletonStyle = {
   marginBottom: 20,
 };
@@ -141,10 +139,9 @@ function PostList() {
   const [mutate] = useMutation(createPost, {
     onMutate: (post) => {
       queryCache.cancelQueries(queryKey);
-      const newPost = { ...post, id: 1 };
+      const newPost = { ...post, id: "NA" };
       // Snapshot the previous value
       const previousTodos = queryCache.getQueryData(queryKey);
-      console.log("On Mutate", newPost, previousTodos);
 
       // Optimistically update to the new value
       queryCache.setQueryData(queryKey, (old) => [newPost, ...old]);
@@ -153,14 +150,20 @@ function PostList() {
       return () => queryCache.setQueryData(queryKey, previousTodos);
     },
     // On failure, roll back to the previous value
-    onError: (err, newTodo, rollback) => {
-      console.log("onError", err);
+    onError: async (err, newTodo, rollback) => {
+      console.log("On Mutate Err", err);
+      await sleep(2000);
+      openSnackbar({
+        message: "Something went wrong, Rolling Back",
+        variant: "error",
+      });
+
       return rollback();
     },
     // After success or failure, refetch the todos query
-    onSettled: () => {
-      console.log("On Settled");
-      queryCache.invalidateQueries(queryKey);
+    onSettled: (data, error) => {
+      // console.log("On Settled", data, error);
+      if (!error) queryCache.invalidateQueries(queryKey);
     },
   });
 
